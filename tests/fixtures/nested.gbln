@@ -1,0 +1,7 @@
+company{
+    name<s64>(Tech Corp)
+    employees[
+        {id<u32>(1) name<s32>(Alice) role<s16>(engineer)}
+        {id<u32>(2) name<s32>(Bob) role<s16>(manager)}
+    ]
+}

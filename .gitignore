@@ -1,0 +1,31 @@
+# Build outputs
+dist/
+build/
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+
+# Composer dependencies
+/vendor/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.phpunit.result.cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# PHPUnit
+.phpunit.cache/
+coverage/
+
+# PHP CS Fixer
+.php-cs-fixer.cache
