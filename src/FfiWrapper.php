@@ -190,7 +190,7 @@ final class FfiWrapper
         // Core functions
         int gbln_parse(const char* input, GblnValue** out_value);
         char* gbln_to_string(const GblnValue* value);
-        char* gbln_to_string_pretty(const GblnValue* value, int indent);
+        char* gbln_to_string_pretty(const GblnValue* value);
         void gbln_value_free(GblnValue* value);
         void gbln_string_free(char* str);
         const char* gbln_last_error_message(void);

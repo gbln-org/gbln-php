@@ -66,15 +66,15 @@ final class GBLN
      * Serialises a PHP value to a GBLN string.
      *
      * @param mixed $value The PHP value to serialise
-     * @param Config|null $config Optional configuration (defaults to mini mode)
+     * @param bool $mini Use mini mode (default: true)
      *
      * @return string The GBLN-formatted string
      *
      * @throws SerialiseException If the value cannot be serialised
      */
-    public static function serialise(mixed $value, ?Config $config = null): string
+    public static function serialise(mixed $value, bool $mini = true): string
     {
-        return Serialiser::serialise($value, $config);
+        return Serialiser::serialise($value, $mini);
     }
 
     /**

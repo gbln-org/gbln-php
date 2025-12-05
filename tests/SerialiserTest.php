@@ -119,13 +119,13 @@ final class SerialiserTest extends TestCase
         $this->assertStringContainsString("\n", $result);
     }
 
-    public function testSerialiseWithConfig(): void
+    public function testSerialiseMiniMode(): void
     {
         $value = ['name' => 'Alice'];
-        $config = Config::ioDefault();
-        $result = Serialiser::serialise($value, $config);
+        $result = Serialiser::serialise($value, mini: true);
 
         $this->assertIsString($result);
+        $this->assertStringNotContainsString("\n", $result);
     }
 
     public function testSerialiseNested(): void

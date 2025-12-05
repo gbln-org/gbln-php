@@ -27,7 +27,7 @@ final class Serialiser
      *
      * @throws SerialiseException If the value cannot be serialised
      */
-    public static function serialise(mixed $value, ?Config $config = null): string
+    public static function serialise(mixed $value, bool $mini = true): string
     {
         $ffi = FfiWrapper::getInstance();
 
@@ -35,28 +35,22 @@ final class Serialiser
         $valuePtr = ValueConversion::toC($value);
 
         try {
-            // Create C config
-            $configPtr = self::createCConfig($config ?? Config::ioDefault());
+            // Call C serialisation function
+            $resultPtr = $mini
+                ? $ffi->gbln_to_string($valuePtr)
+                : $ffi->gbln_to_string_pretty($valuePtr);
 
-            try {
-                // Call C serialisation function
-                $resultPtr = $ffi->gbln_serialise($valuePtr, $configPtr);
-
-                if ($resultPtr === null) {
-                    throw new SerialiseException('Failed to serialise value: C function returned null');
-                }
-
-                // Convert C string to PHP string
-                $gblnString = \FFI::string($resultPtr);
-
-                // Free the C string
-                $ffi->gbln_string_free($resultPtr);
-
-                return $gblnString;
-            } finally {
-                // Free the C config
-                $ffi->gbln_config_free($configPtr);
+            if ($resultPtr === null) {
+                throw new SerialiseException('Failed to serialise value: C function returned null');
             }
+
+            // Convert C string to PHP string
+            $gblnString = \FFI::string($resultPtr);
+
+            // Free the C string
+            $ffi->gbln_string_free($resultPtr);
+
+            return $gblnString;
         } finally {
             // Always free the C value
             $ffi->gbln_value_free($valuePtr);
@@ -76,15 +70,7 @@ final class Serialiser
      */
     public static function serialiseMini(mixed $value): string
     {
-        $config = new Config(
-            miniMode: true,
-            compress: true,
-            compressionLevel: 6,
-            indent: 0,
-            stripComments: true
-        );
-
-        return self::serialise($value, $config);
+        return self::serialise($value, mini: true);
     }
 
     /**
@@ -101,44 +87,8 @@ final class Serialiser
      */
     public static function serialisePretty(mixed $value, int $indent = 2): string
     {
-        $config = new Config(
-            miniMode: false,
-            compress: false,
-            compressionLevel: 0,
-            indent: $indent,
-            stripComments: false
-        );
-
-        return self::serialise($value, $config);
-    }
-
-    /**
-     * Creates a C config structure from a PHP Config object.
-     *
-     * @param Config $config The PHP configuration
-     *
-     * @return \FFI\CData The C config pointer
-     *
-     * @throws SerialiseException If config creation fails
-     */
-    private static function createCConfig(Config $config): \FFI\CData
-    {
-        $ffi = FfiWrapper::getInstance();
-
-        // Create new C config
-        $configPtr = $ffi->gbln_config_new(
-            $config->miniMode ? 1 : 0,
-            $config->compress ? 1 : 0,
-            $config->compressionLevel,
-            $config->indent,
-            $config->stripComments ? 1 : 0
-        );
-
-        if ($configPtr === null) {
-            throw new SerialiseException('Failed to create C config: C function returned null');
-        }
-
-        return $configPtr;
+        // Note: indent parameter kept for API compatibility but C library uses fixed 2-space indent
+        return self::serialise($value, mini: false);
     }
 
     /**
@@ -147,15 +97,15 @@ final class Serialiser
      * Useful for debugging and optimisation.
      *
      * @param mixed $value The PHP value to serialise
-     * @param Config|null $config Optional configuration
+     * @param bool $mini Use mini mode (default: true)
      *
      * @return array{gbln: string, bytes: int, lines: int, tokens_estimate: int}
      *
      * @throws SerialiseException If the value cannot be serialised
      */
-    public static function serialiseWithStats(mixed $value, ?Config $config = null): array
+    public static function serialiseWithStats(mixed $value, bool $mini = true): array
     {
-        $gbln = self::serialise($value, $config);
+        $gbln = self::serialise($value, $mini);
 
         $bytes = strlen($gbln);
         $lines = substr_count($gbln, "\n") + 1;
