@@ -170,19 +170,19 @@ final class FfiWrapper
         } GblnErrorCode;
 
         typedef enum {
-            GBLN_TYPE_NULL = 0,
-            GBLN_TYPE_BOOL = 1,
-            GBLN_TYPE_I8 = 2,
-            GBLN_TYPE_I16 = 3,
-            GBLN_TYPE_I32 = 4,
-            GBLN_TYPE_I64 = 5,
-            GBLN_TYPE_U8 = 6,
-            GBLN_TYPE_U16 = 7,
-            GBLN_TYPE_U32 = 8,
-            GBLN_TYPE_U64 = 9,
-            GBLN_TYPE_F32 = 10,
-            GBLN_TYPE_F64 = 11,
-            GBLN_TYPE_STR = 12,
+            GBLN_TYPE_I8 = 0,
+            GBLN_TYPE_I16 = 1,
+            GBLN_TYPE_I32 = 2,
+            GBLN_TYPE_I64 = 3,
+            GBLN_TYPE_U8 = 4,
+            GBLN_TYPE_U16 = 5,
+            GBLN_TYPE_U32 = 6,
+            GBLN_TYPE_U64 = 7,
+            GBLN_TYPE_F32 = 8,
+            GBLN_TYPE_F64 = 9,
+            GBLN_TYPE_STR = 10,
+            GBLN_TYPE_BOOL = 11,
+            GBLN_TYPE_NULL = 12,
             GBLN_TYPE_OBJECT = 13,
             GBLN_TYPE_ARRAY = 14
         } GblnValueType;

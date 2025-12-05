@@ -53,8 +53,8 @@ final class Io
         // Use I/O defaults if no config provided
         $config = $config ?? Config::ioDefault();
 
-        // Serialise to GBLN string
-        $gblnString = Serialiser::serialise($value, $config);
+        // Serialise to GBLN string (use mini mode based on config)
+        $gblnString = Serialiser::serialise($value, mini: $config->miniMode);
 
         // Check if compression is requested
         $shouldCompress = str_ends_with($path, '.xz');

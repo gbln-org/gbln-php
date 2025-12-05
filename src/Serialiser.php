@@ -142,7 +142,8 @@ final class Serialiser
             $gbln = self::serialise($value);
             $restored = Parser::parse($gbln);
 
-            return $value === $restored;
+            // Use loose comparison (==) because key order may differ
+            return $value == $restored;
         } catch (\Exception) {
             return false;
         }

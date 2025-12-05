@@ -36,19 +36,19 @@ final class ValueConversion
         $type = $ffi->gbln_value_type($valuePtr);
 
         return match ($type) {
-            0 => null,  // GBLN_TYPE_NULL
-            1 => self::extractBool($valuePtr),  // GBLN_TYPE_BOOL
-            2 => self::extractI8($valuePtr),    // GBLN_TYPE_I8
-            3 => self::extractI16($valuePtr),   // GBLN_TYPE_I16
-            4 => self::extractI32($valuePtr),   // GBLN_TYPE_I32
-            5 => self::extractI64($valuePtr),   // GBLN_TYPE_I64
-            6 => self::extractU8($valuePtr),    // GBLN_TYPE_U8
-            7 => self::extractU16($valuePtr),   // GBLN_TYPE_U16
-            8 => self::extractU32($valuePtr),   // GBLN_TYPE_U32
-            9 => self::extractU64($valuePtr),   // GBLN_TYPE_U64
-            10 => self::extractF32($valuePtr),  // GBLN_TYPE_F32
-            11 => self::extractF64($valuePtr),  // GBLN_TYPE_F64
-            12 => self::extractString($valuePtr), // GBLN_TYPE_STR
+            0 => self::extractI8($valuePtr),    // GBLN_TYPE_I8
+            1 => self::extractI16($valuePtr),   // GBLN_TYPE_I16
+            2 => self::extractI32($valuePtr),   // GBLN_TYPE_I32
+            3 => self::extractI64($valuePtr),   // GBLN_TYPE_I64
+            4 => self::extractU8($valuePtr),    // GBLN_TYPE_U8
+            5 => self::extractU16($valuePtr),   // GBLN_TYPE_U16
+            6 => self::extractU32($valuePtr),   // GBLN_TYPE_U32
+            7 => self::extractU64($valuePtr),   // GBLN_TYPE_U64
+            8 => self::extractF32($valuePtr),   // GBLN_TYPE_F32
+            9 => self::extractF64($valuePtr),   // GBLN_TYPE_F64
+            10 => self::extractString($valuePtr), // GBLN_TYPE_STR
+            11 => self::extractBool($valuePtr),  // GBLN_TYPE_BOOL
+            12 => null,                         // GBLN_TYPE_NULL
             13 => self::convertObject($valuePtr), // GBLN_TYPE_OBJECT
             14 => self::convertArray($valuePtr),  // GBLN_TYPE_ARRAY
             default => throw new SerialiseException("Unknown type code: {$type}")
@@ -103,7 +103,7 @@ final class ValueConversion
         $error = $ffi->new('int');
         $result = $ffi->gbln_value_as_bool($valuePtr, FFI::addr($error));
 
-        if ($error->cdata !== 0) {
+        if ($error->cdata == 0) {
             throw new SerialiseException('Failed to extract bool');
         }
 
@@ -114,70 +114,130 @@ final class ValueConversion
     {
         $ffi = FfiWrapper::getInstance();
         $error = $ffi->new('int');
-        return $ffi->gbln_value_as_i8($valuePtr, FFI::addr($error));
+        $result = $ffi->gbln_value_as_i8($valuePtr, FFI::addr($error));
+
+        if ($error->cdata == 0) {
+            throw new SerialiseException('Failed to extract i8');
+        }
+
+        return $result;
     }
 
     private static function extractI16(CData $valuePtr): int
     {
         $ffi = FfiWrapper::getInstance();
         $error = $ffi->new('int');
-        return $ffi->gbln_value_as_i16($valuePtr, FFI::addr($error));
+        $result = $ffi->gbln_value_as_i16($valuePtr, FFI::addr($error));
+
+        if ($error->cdata == 0) {
+            throw new SerialiseException('Failed to extract i16');
+        }
+
+        return $result;
     }
 
     private static function extractI32(CData $valuePtr): int
     {
         $ffi = FfiWrapper::getInstance();
         $error = $ffi->new('int');
-        return $ffi->gbln_value_as_i32($valuePtr, FFI::addr($error));
+        $result = $ffi->gbln_value_as_i32($valuePtr, FFI::addr($error));
+
+        if ($error->cdata == 0) {
+            throw new SerialiseException('Failed to extract i32');
+        }
+
+        return $result;
     }
 
     private static function extractI64(CData $valuePtr): int
     {
         $ffi = FfiWrapper::getInstance();
         $error = $ffi->new('int');
-        return $ffi->gbln_value_as_i64($valuePtr, FFI::addr($error));
+        $result = $ffi->gbln_value_as_i64($valuePtr, FFI::addr($error));
+
+        if ($error->cdata == 0) {
+            throw new SerialiseException('Failed to extract i64');
+        }
+
+        return $result;
     }
 
     private static function extractU8(CData $valuePtr): int
     {
         $ffi = FfiWrapper::getInstance();
         $error = $ffi->new('int');
-        return $ffi->gbln_value_as_u8($valuePtr, FFI::addr($error));
+        $result = $ffi->gbln_value_as_u8($valuePtr, FFI::addr($error));
+
+        if ($error->cdata == 0) {
+            throw new SerialiseException('Failed to extract u8');
+        }
+
+        return $result;
     }
 
     private static function extractU16(CData $valuePtr): int
     {
         $ffi = FfiWrapper::getInstance();
         $error = $ffi->new('int');
-        return $ffi->gbln_value_as_u16($valuePtr, FFI::addr($error));
+        $result = $ffi->gbln_value_as_u16($valuePtr, FFI::addr($error));
+
+        if ($error->cdata == 0) {
+            throw new SerialiseException('Failed to extract u16');
+        }
+
+        return $result;
     }
 
     private static function extractU32(CData $valuePtr): int
     {
         $ffi = FfiWrapper::getInstance();
         $error = $ffi->new('int');
-        return $ffi->gbln_value_as_u32($valuePtr, FFI::addr($error));
+        $result = $ffi->gbln_value_as_u32($valuePtr, FFI::addr($error));
+
+        if ($error->cdata == 0) {
+            throw new SerialiseException('Failed to extract u32');
+        }
+
+        return $result;
     }
 
     private static function extractU64(CData $valuePtr): int
     {
         $ffi = FfiWrapper::getInstance();
         $error = $ffi->new('int');
-        return $ffi->gbln_value_as_u64($valuePtr, FFI::addr($error));
+        $result = $ffi->gbln_value_as_u64($valuePtr, FFI::addr($error));
+
+        if ($error->cdata == 0) {
+            throw new SerialiseException('Failed to extract u64');
+        }
+
+        return $result;
     }
 
     private static function extractF32(CData $valuePtr): float
     {
         $ffi = FfiWrapper::getInstance();
         $error = $ffi->new('int');
-        return $ffi->gbln_value_as_f32($valuePtr, FFI::addr($error));
+        $result = $ffi->gbln_value_as_f32($valuePtr, FFI::addr($error));
+
+        if ($error->cdata == 0) {
+            throw new SerialiseException('Failed to extract f32');
+        }
+
+        return $result;
     }
 
     private static function extractF64(CData $valuePtr): float
     {
         $ffi = FfiWrapper::getInstance();
         $error = $ffi->new('int');
-        return $ffi->gbln_value_as_f64($valuePtr, FFI::addr($error));
+        $result = $ffi->gbln_value_as_f64($valuePtr, FFI::addr($error));
+
+        if ($error->cdata == 0) {
+            throw new SerialiseException('Failed to extract f64');
+        }
+
+        return $result;
     }
 
     private static function extractString(CData $valuePtr): string
@@ -186,11 +246,12 @@ final class ValueConversion
         $error = $ffi->new('int');
         $result = $ffi->gbln_value_as_string($valuePtr, FFI::addr($error));
 
-        if ($error->cdata !== 0) {
+        if ($error->cdata == 0) {
             throw new SerialiseException('Failed to extract string');
         }
 
-        return FFI::string($result);
+        // gbln_value_as_string returns const char* directly (not a pointer to pointer)
+        return $result;
     }
 
     private static function convertObject(CData $valuePtr): array
